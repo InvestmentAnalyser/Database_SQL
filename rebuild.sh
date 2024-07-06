@@ -35,9 +35,9 @@ RESET='\033[0m'
 
 # define docker variables
 DockerImageName="investment/postgresql"
-DockerfileName="PostgreSQL.Dockerfile"
+DockerfileName="Dockerfile"
 DockerContainerName="Investment_PostgreSQL"
-HostPortToOpen="5532"
+HostPortToOpen="5432"
 
 Main() {
 
