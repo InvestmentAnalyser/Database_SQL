@@ -60,10 +60,7 @@ BEGIN
         var_fund_id := get_fund_id(var_fund_url);
         var_category_name := get_fund_category(var_fund_url);
         var_category_short := get_fund_category_short(var_fund_url);
-
-        INSERT INTO Fund_Category(c_name, C_shortname)
-        VALUES(var_category_name,var_category_short)
-        RETURNING ID INTO var_category_id;
+        var_category_id := get_fund_category_id(var_category_name, var_category_short);
 
         INSERT INTO Fund (ID, F_name, Category_ID, F_url)
         VALUES(var_fund_id,var_fund_name,var_category_id,var_fund_url);
