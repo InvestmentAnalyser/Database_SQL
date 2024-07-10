@@ -83,3 +83,26 @@ return (converted_date - datetime.timedelta(days= num_of_days))
 
 $$ LANGUAGE plpython3u;
 
+CREATE FUNCTION get_fund_category_id (var_category_name varchar, var_category_short varchar)
+RETURNS int	 AS $$
+DECLARE
+    var_category_id int;
+BEGIN
+
+    SELECT
+        id
+    INTO var_category_id
+    FROM fund_category
+    WHERE c_shortname = var_category_short
+    LIMIT 1;
+
+    IF var_category_id IS NULL THEN
+        INSERT INTO Fund_Category(c_name, C_shortname)
+        VALUES(var_category_name,var_category_short)
+        RETURNING ID INTO var_category_id;
+    END IF;
+
+    RETURN var_category_id;
+
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
