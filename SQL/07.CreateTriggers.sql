@@ -27,7 +27,7 @@
 
     .NOTES
 
-        Version:            1.0
+        Version:            1.1
         Author:             Stanisław Horna
         Mail:               stanislawhorna@outlook.com
         GitHub Repository:  https://github.com/StanislawHornaGitHub/Investment
@@ -35,6 +35,7 @@
         ChangeLog:
 
         Date            Who                     What
+        2024-07-11      Stanisław Horna         link delete functions for funds and investments with corresponding views.
 
 */
 CREATE TRIGGER instead_of_insert
@@ -46,3 +47,13 @@ CREATE TRIGGER instead_of_insert
 INSTEAD OF INSERT ON investments
 FOR EACH ROW
 EXECUTE FUNCTION insert_investment();
+
+CREATE TRIGGER instead_of_delete
+INSTEAD OF DELETE ON funds
+FOR EACH ROW
+EXECUTE FUNCTION delete_Fund();
+
+CREATE TRIGGER instead_of_delete
+INSTEAD OF DELETE ON investments
+FOR EACH ROW
+EXECUTE FUNCTION delete_Investment();
