@@ -29,7 +29,7 @@
 
     .NOTES
 
-        Version:            1.0
+        Version:            1.1
         Author:             Stanisław Horna
         Mail:               stanislawhorna@outlook.com
         GitHub Repository:  https://github.com/StanislawHornaGitHub/Investment
@@ -37,5 +37,49 @@
         ChangeLog:
 
         Date            Who                     What
+        2024-07-11      Stanisław Horna         Add delete functions for funds and investments views
 
 */
+CREATE FUNCTION delete_Fund ()
+RETURNS TRIGGER AS $$
+BEGIN
+
+    DELETE FROM Fund
+    WHERE ID = OLD.fund_id;
+
+    RETURN OLD;
+    
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+
+CREATE FUNCTION delete_Investment ()
+RETURNS TRIGGER AS $$
+DECLARE
+    Ops_ID int;
+BEGIN   
+
+    -- get operation id
+    SELECT 
+        ID
+    INTO Ops_ID
+    FROM Fund_Operations fo
+    LEFT JOIN Investment_Fund ifun ON fo.id = ifun.Operation_ID
+    WHERE ifun.Fund_ID = OLD.investment_fund_id
+        AND ifun.Investment_ID = OLD.investment_id
+        AND fo.Quotation_date = OLD.operation_quotation_date;
+
+    -- delete link between operation and investment
+    DELETE FROM Investment_Fund
+    WHERE Investment_ID = OLD.investment_id
+        AND Fund_ID = OLD.investment_fund_id
+        AND Operation_ID = Ops_ID;
+
+    -- delete operation
+    DELETE FROM Fund_Operations
+    WHERE ID = Ops_ID;
+    
+    RETURN OLD;
+
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
