@@ -35,9 +35,10 @@
         ChangeLog:
 
         Date            Who                     What
-        2024-07-11      Stanisław Horna         link delete functions for funds and investments with corresponding views.
+        2024-07-11      Stanisław Horna         Link delete functions for funds and investments with corresponding views.
 
 */
+
 CREATE TRIGGER instead_of_insert
 INSTEAD OF INSERT ON funds
 FOR EACH ROW

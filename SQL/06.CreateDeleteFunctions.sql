@@ -29,7 +29,7 @@
 
     .NOTES
 
-        Version:            1.1
+        Version:            1.2
         Author:             Stanisław Horna
         Mail:               stanislawhorna@outlook.com
         GitHub Repository:  https://github.com/StanislawHornaGitHub/Investment
@@ -39,7 +39,10 @@
         Date            Who                     What
         2024-07-11      Stanisław Horna         Add delete functions for funds and investments views
 
+        2024-07-15      Stanisław Horna         Add removing investment entry if there are no operations linked.
+
 */
+
 CREATE FUNCTION delete_Fund ()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -78,6 +81,17 @@ BEGIN
     -- delete operation
     DELETE FROM Fund_Operations
     WHERE ID = Ops_ID;
+
+    -- delete investment entry, if there are no operations linked to the investment
+    IF NOT EXISTS (
+        SELECT
+            Investment_ID
+        FROM Investment_Fund
+        WHERE Investment_ID = OLD.investment_id
+    ) THEN
+        DELETE FROM Investment
+        WHERE ID = OLD.investment_id;
+    END IF;
     
     RETURN OLD;
 
