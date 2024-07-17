@@ -149,6 +149,10 @@ ALTER TABLE Investment_Fund_Results
 ADD CONSTRAINT Fund_fkey FOREIGN KEY (Fund_ID) 
 REFERENCES Fund (ID) MATCH SIMPLE;
 
+ALTER TABLE Investment_Fund_Results 
+ADD CONSTRAINT Investment_fkey FOREIGN KEY (Investment_ID) 
+REFERENCES Investment (ID) MATCH SIMPLE;
+
 ALTER TABLE Investment
 ADD CONSTRAINT Owner_fkey FOREIGN KEY (Owner_ID) 
 REFERENCES Investment_Owner (ID) MATCH SIMPLE;
